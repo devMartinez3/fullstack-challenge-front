@@ -5,36 +5,37 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(request: NextRequest) {
-  const response = intlMiddleware(request);
+export function proxy(request: NextRequest) {
+  const intlResponse = intlMiddleware(request);
 
-  if (response) {
-    return response;
+  if (intlResponse && intlResponse.status >= 300 && intlResponse.status < 400) {
+    return intlResponse;
   }
 
   const token = request.cookies.get("auth_token")?.value;
   const { pathname } = request.nextUrl;
 
-  const locale = pathname.split("/")[1] as "en" | "es";
-  const isLocalePrefixed = routing.locales.includes(locale);
+  const locale = pathname.split("/")[1];
+  const hasLocale = routing.locales.includes(locale as any);
 
-  const basePath = isLocalePrefixed ? `/${locale}` : "";
-  const isAuthPage = pathname.startsWith(`${basePath}/login`);
+  const loginPath = hasLocale ? `/${locale}/login` : "/login";
+  const homePath = hasLocale ? `/${locale}` : "/";
+
+  const isAuthPage = pathname.startsWith(loginPath);
 
   if (!token && !isAuthPage) {
-    return NextResponse.redirect(new URL(`${basePath}/login`, request.url));
+    return NextResponse.redirect(new URL(loginPath, request.url));
   }
-
   if (token && isAuthPage) {
-    return NextResponse.redirect(new URL(`${basePath}/`, request.url));
+    return NextResponse.redirect(new URL(homePath, request.url));
   }
 
-  return NextResponse.next();
+  return intlResponse ?? NextResponse.next();
 }
 export const config = {
   matcher: [
     "/",
     "/(es|en)/:path*",
-    "/((?!api|_next|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };
