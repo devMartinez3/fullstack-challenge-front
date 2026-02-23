@@ -15,6 +15,12 @@ export const usersService = {
     return response.data;
   },
   deleteUser: async ({ id, adminId }: { id: number; adminId: number }) => {
+    if (!id || !adminId) {
+      throw new Error("Missing required parameters");
+    }
+    if (id === adminId) {
+      throw new Error("You cannot delete yourself");
+    }
     const { data } = await api.delete(`/users/saved/${id}?adminId=${adminId}`);
     return data;
   },
