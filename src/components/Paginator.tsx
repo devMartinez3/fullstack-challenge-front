@@ -19,7 +19,7 @@ interface PaginatorProps {
   currentPage: number;
   totalPages: number;
   pageSize: number;
-  pageSizes: number[];
+  pageSizes?: number[];
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
 }
