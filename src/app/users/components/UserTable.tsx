@@ -21,7 +21,8 @@ import { usersService } from "@/services/users.service";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { UserData, UsersResponse } from "@/types/users";
+import { UserData } from "@/types/users";
+import { Meta } from "@/types/common";
 
 interface UserTableProps {
   isLoading: boolean;
@@ -34,7 +35,8 @@ interface UserTableProps {
   setUserToDelete: (id: number) => void;
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
-  usersResponse?: UsersResponse;
+  usersResponse?: UserData[];
+  metaResp?: Meta;
 }
 
 export default function UserTable({
@@ -44,6 +46,7 @@ export default function UserTable({
   setPage,
   setLimit,
   usersResponse,
+  metaResp,
 }: UserTableProps) {
   const { user: authUser } = useAuthStore();
   const queryClient = useQueryClient();
@@ -74,7 +77,7 @@ export default function UserTable({
   return (
     <>
       <DataTable
-        data={usersResponse?.data || []}
+        data={usersResponse || []}
         columns={[
           {
             header: "Avatar",
@@ -217,15 +220,15 @@ export default function UserTable({
         keyExtractor={(item: UserData) => item.id.toString()}
       />
 
-      {usersResponse?.meta && (
+      {metaResp && (
         <Paginator
-          currentPage={usersResponse.meta.page}
-          totalPages={usersResponse.meta.lastPage}
-          pageSize={usersResponse.meta.limit}
+          currentPage={metaResp.page}
+          totalPages={metaResp.lastPage}
+          pageSize={metaResp.limit}
           onPageChange={(newPage) => setPage(newPage)}
           onPageSizeChange={(newSize) => {
             setLimit(newSize);
-            setPage(1); // Reset to first page on resize
+            setPage(1);
           }}
         />
       )}

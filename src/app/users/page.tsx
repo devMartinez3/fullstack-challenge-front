@@ -28,7 +28,8 @@ import { Search } from "lucide-react";
 import { Header } from "@/components/Header";
 import UserTable from "./components/UserTable";
 import { useAuthStore } from "@/store/authStore";
-import { UsersResponse } from "@/types/users";
+import { UserData } from "@/types/users";
+import { Meta } from "@/types/common";
 
 export default function UsersPage() {
   const queryClient = useQueryClient();
@@ -41,7 +42,10 @@ export default function UsersPage() {
   const [limit, setLimit] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: usersResponse, isLoading } = useQuery<UsersResponse>({
+  const { data: usersResponse, isLoading } = useQuery<{
+    data: UserData[];
+    meta: Meta;
+  }>({
     queryKey: ["users", page, limit],
     queryFn: () => usersService.getSavedUsers(page, limit),
   });
@@ -137,13 +141,13 @@ export default function UsersPage() {
             </div>
 
             <UserTable
-              users={filteredUsers}
+              metaResp={usersResponse?.meta}
+              usersResponse={filteredUsers}
               isLoading={isLoading}
               deleteMutation={deleteMutation}
               setUserToDelete={setUserToDelete}
               setPage={setPage}
               setLimit={setLimit}
-              usersResponse={usersResponse}
             />
           </div>
         </main>

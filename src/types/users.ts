@@ -1,5 +1,3 @@
-import { Meta } from "./common";
-
 export interface UserData {
   id: number;
   email: string;
@@ -9,8 +7,3 @@ export interface UserData {
   role: string;
   _count?: { posts: number };
 }
-
-export type UsersResponse = {
-  data: UserData[];
-  meta: Meta;
-};
