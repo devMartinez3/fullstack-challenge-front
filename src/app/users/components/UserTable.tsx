@@ -21,19 +21,9 @@ import { usersService } from "@/services/users.service";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-export interface UserData {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  avatar?: string;
-  role: string;
-  _count?: { posts: number };
-}
+import { UserData, UsersResponse } from "@/types/users";
 
 interface UserTableProps {
-  users: UserData[];
   isLoading: boolean;
   deleteMutation: UseMutationResult<
     any,
@@ -44,13 +34,10 @@ interface UserTableProps {
   setUserToDelete: (id: number) => void;
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
-  usersResponse: {
-    meta?: { page: number; limit: number; lastPage: number };
-  } | null;
+  usersResponse?: UsersResponse;
 }
 
 export default function UserTable({
-  users,
   isLoading,
   deleteMutation,
   setUserToDelete,
@@ -87,7 +74,7 @@ export default function UserTable({
   return (
     <>
       <DataTable
-        data={users}
+        data={usersResponse?.data || []}
         columns={[
           {
             header: "Avatar",

@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function Error({
   error,
@@ -14,6 +15,7 @@ export default function Error({
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { contextSafe } = useGSAP({ scope: buttonRef });
+  const router = useRouter();
 
   const handleMouseEnter = contextSafe((e: React.MouseEvent) => {
     gsap.to(e.currentTarget, {
@@ -74,7 +76,7 @@ export default function Error({
       <button
         ref={buttonRef}
         type="submit"
-        onClick={() => reset()}
+        onClick={() => router.push("/")}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}

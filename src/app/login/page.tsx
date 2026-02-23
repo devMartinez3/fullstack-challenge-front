@@ -35,9 +35,7 @@ export default function LoginPage() {
       router.push("/");
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Contraseña o email incorrectos",
-      );
+      toast.error(error.response?.data?.message || "Error al iniciar sesión");
     },
   });
 
