@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Error({
   error,
@@ -16,6 +17,7 @@ export default function Error({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { contextSafe } = useGSAP({ scope: buttonRef });
   const router = useRouter();
+  const t = useTranslations("error");
 
   const handleMouseEnter = contextSafe((e: React.MouseEvent) => {
     gsap.to(e.currentTarget, {
@@ -68,11 +70,9 @@ export default function Error({
   return (
     <div className="flex flex-col items-center justify-center p-8 space-y-4 text-center">
       <h2 className="text-xl font-semibold text-destructive">
-        ¡Algo salió mal!
+        {t("error.title")}
       </h2>
-      <p className="text-muted-foreground">
-        No se pudieron cargar los ajustes. Por favor, intenta de nuevo.
-      </p>
+      <p className="text-muted-foreground">{t("error.description")}</p>
       <button
         ref={buttonRef}
         type="submit"
@@ -90,7 +90,7 @@ export default function Error({
         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out skew-y-12 origin-bottom" />
 
         <span className="relative flex items-center gap-2">
-          Regresar al inicio
+          {t("error.backHome")}
         </span>
       </button>
     </div>

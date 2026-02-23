@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Languages } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useLocale, useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/routing";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,26 +14,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTranslations } from "next-intl";
 
-export function ThemeToggle() {
-  const t = useTranslations("theme");
-  const { setTheme, theme } = useTheme();
+export function LocaleToggle() {
+  const t = useTranslations("locale");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      // Initial mount animation to ensure it becomes visible
+      // Initial mount animation
       gsap.fromTo(
         containerRef.current,
-        { y: -20, opacity: 0, rotation: 180 },
+        { scale: 0, opacity: 0 },
         {
-          y: 0,
+          scale: 1,
           opacity: 1,
-          rotation: 0,
-          duration: 0.8,
-          ease: "elastic.out(1, 0.5)",
-          delay: 0.2,
+          duration: 0.5,
+          ease: "back.out(1.7)",
+          delay: 0.3,
         },
       );
     },
@@ -41,20 +42,22 @@ export function ThemeToggle() {
 
   const handleMouseEnter = () => {
     gsap.to(containerRef.current, {
-      rotation: theme === "dark" ? -15 : 15,
       scale: 1.1,
       duration: 0.3,
-      ease: "back.out(2)",
+      ease: "power2.out",
     });
   };
 
   const handleMouseLeave = () => {
     gsap.to(containerRef.current, {
-      rotation: 0,
       scale: 1,
       duration: 0.3,
       ease: "power2.out",
     });
+  };
+
+  const switchLocale = (nextLocale: string) => {
+    router.replace(pathname, { locale: nextLocale });
   };
 
   return (
@@ -71,20 +74,26 @@ export function ThemeToggle() {
             size="icon"
             className="rounded-full shadow-sm border border-gray-200"
           >
-            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <Languages className="h-[1.2rem] w-[1.2rem]" />
             <span className="sr-only">{t("toggle")}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setTheme("light")}>
-            {t("light")}
+          <DropdownMenuItem
+            onClick={() => switchLocale("en")}
+            className={
+              locale === "en" ? "bg-accent text-accent-foreground" : ""
+            }
+          >
+            {t("en")}
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
-            {t("dark")}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("system")}>
-            {t("system")}
+          <DropdownMenuItem
+            onClick={() => switchLocale("es")}
+            className={
+              locale === "es" ? "bg-accent text-accent-foreground" : ""
+            }
+          >
+            {t("es")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

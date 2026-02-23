@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import type { UseFormReturn } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 interface PostDialogProps {
   isOpen: boolean;
@@ -36,18 +37,21 @@ export function PostDialog({
   isPending,
   mode,
 }: PostDialogProps) {
+  const t = useTranslations("postDialog");
   const isCreate = mode === "create";
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isCreate ? "Crear Post" : "Editar Post"}</DialogTitle>
-          <DialogDescription>
-            {isCreate
-              ? "Escribe un título y contenido para tu nuevo post."
-              : "Modifica la información del post."}
-          </DialogDescription>
+          <DialogTitle>
+            {isCreate ? t("title.create") : t("title.edit")}
+          </DialogTitle>
+          <DialogHeader>
+            <DialogDescription>
+              {isCreate ? t("description.create") : t("description.edit")}
+            </DialogDescription>
+          </DialogHeader>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -59,9 +63,12 @@ export function PostDialog({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Título</FormLabel>
+                  <FormLabel>{t("form.titleLabel")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Título del post..." {...field} />
+                    <Input
+                      placeholder={t("form.titlePlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -72,11 +79,11 @@ export function PostDialog({
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contenido</FormLabel>
+                  <FormLabel>{t("form.contentLabel")}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Textarea
-                        placeholder="Escribe el contenido aquí..."
+                        placeholder={t("form.contentPlaceholder")}
                         className={`resize-none ${isCreate ? "h-[200px]" : "min-h-[120px]"}`}
                         rows={isCreate ? 6 : undefined}
                         {...field}
@@ -89,7 +96,7 @@ export function PostDialog({
                         }}
                       />
                       <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
-                        {field.value?.length || 0}/500
+                        {t("form.counter", { count: field.value?.length || 0 })}
                       </div>
                     </div>
                   </FormControl>
@@ -101,11 +108,11 @@ export function PostDialog({
               <Button type="submit" disabled={isPending}>
                 {isCreate
                   ? isPending
-                    ? "Creando..."
-                    : "Crear"
+                    ? t("actions.creating")
+                    : t("actions.create")
                   : isPending
-                    ? "Guardando..."
-                    : "Guardar Cambios"}
+                    ? t("actions.saving")
+                    : t("actions.save")}
               </Button>
             </DialogFooter>
           </form>

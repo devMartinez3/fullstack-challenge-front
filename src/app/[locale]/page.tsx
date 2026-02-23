@@ -14,8 +14,10 @@ import { Users, FileText, UserCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export default function DashboardPage() {
+  const t = useTranslations("dashboard");
   const { data: stats, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
     queryFn: statsService.getStats,
@@ -23,21 +25,21 @@ export default function DashboardPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50/50 dark:bg-background">
-      <Header title="Dashboard" />
+      <Header title={t("title")} />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="mx-auto max-w-6xl space-y-8">
           {/* Welcome / Header Section */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h2 className="text-3xl font-bold tracking-tight">
-                Bienvenido al Dashboard
+                {t("welcomeTitle")}
               </h2>
               <p className="text-muted-foreground mt-1 text-sm sm:text-base">
-                Resumen general de la actividad reciente en la plataforma.
+                {t("welcomeDescription")}
               </p>
             </div>
             <Button asChild>
-              <Link href="/users">Gestionar Usuarios</Link>
+              <Link href="/users">{t("manageUsers")}</Link>
             </Button>
           </div>
 
@@ -54,28 +56,28 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Usuarios Registrados
+                      {t("stats.users.title")}
                     </CardTitle>
                     <Users className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.totalUsers}</div>
                     <p className="text-xs text-muted-foreground">
-                      En la base de datos local
+                      {t("stats.users.description")}
                     </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Publicaciones Activas
+                      {t("stats.posts.title")}
                     </CardTitle>
                     <FileText className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.totalPosts}</div>
                     <p className="text-xs text-muted-foreground">
-                      Posts creados por usuarios
+                      {t("stats.posts.description")}
                     </p>
                   </CardContent>
                 </Card>
@@ -86,9 +88,9 @@ export default function DashboardPage() {
                 {/* Latest Users */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Usuarios Recientes</CardTitle>
+                    <CardTitle>{t("latestUsers.title")}</CardTitle>
                     <CardDescription>
-                      Los últimos 3 usuarios registrados.
+                      {t("latestUsers.description")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -115,14 +117,14 @@ export default function DashboardPage() {
                               size="sm"
                               className="hidden sm:flex"
                             >
-                              Ver
+                              {t("latestUsers.view")}
                             </Button>
                           </Link>
                         </div>
                       ))}
                       {stats.latestUsers.length === 0 && (
                         <p className="text-sm text-muted-foreground">
-                          No hay usuarios aún.
+                          {t("latestUsers.empty")}
                         </p>
                       )}
                     </div>
@@ -132,9 +134,9 @@ export default function DashboardPage() {
                 {/* Recent Posts */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Últimos Posts</CardTitle>
+                    <CardTitle>{t("recentPosts.title")}</CardTitle>
                     <CardDescription>
-                      Las publicaciones más recientes.
+                      {t("recentPosts.description")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -162,7 +164,7 @@ export default function DashboardPage() {
                       ))}
                       {stats.recentPosts.length === 0 && (
                         <p className="text-sm text-muted-foreground">
-                          No hay publicaciones aún.
+                          {t("recentPosts.empty")}
                         </p>
                       )}
                     </div>
@@ -171,9 +173,7 @@ export default function DashboardPage() {
               </div>
             </>
           ) : (
-            <div className="p-8 text-center text-red-500">
-              Error al cargar el dashboard
-            </div>
+            <div className="p-8 text-center text-red-500">{t("error")}</div>
           )}
         </div>
       </main>

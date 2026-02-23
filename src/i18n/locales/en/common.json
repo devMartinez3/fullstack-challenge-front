@@ -1,0 +1,217 @@
+{
+  "login": {
+    "title": "Login",
+    "description": "Enter your email below to login to your account.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "eve.holt@reqres.in",
+    "passwordLabel": "Password",
+    "submit": "Sign in",
+    "submitting": "Logging in...",
+    "success": "Login successful!",
+    "errors": {
+      "missingCredentials": "Please enter email and password",
+      "default": "Error logging in"
+    }
+  },
+  "user": {
+    "dashboard": {
+      "headerTitle": "User Dashboard",
+      "title": "Users",
+      "description": "These users are saved in the local database. You can import new users from ReqRes using the button below."
+    },
+    "search": {
+      "placeholder": "Search by name, email or ReqRes ID..."
+    },
+    "actions": {
+      "importFromReqRes": "Import User from ReqRes",
+      "import": "Import",
+      "importing": "Importing...",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "edit": "Edit"
+    },
+    "importDialog": {
+      "title": "Import User",
+      "description": "Enter the ReqRes User ID you wish to import into the local database.",
+      "userIdLabel": "User ID",
+      "userIdPlaceholder": "e.g. 1, 2, 3..."
+    },
+    "deleteDialog": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone. This will permanently delete the user and remove their data from our servers."
+    },
+    "toasts": {
+      "importSuccess": "User imported successfully",
+      "importError": "Error importing user",
+      "deleteSuccess": "User discarded",
+      "deleteError": "Error deleting user",
+      "invalidId": "Please enter a valid ID",
+      "invalidSession": "Invalid session, please try again.",
+      "roleUpdated": "Role updated successfully",
+      "roleUpdateError": "Error updating role"
+    },
+    "table": {
+      "columns": {
+        "avatar": "Avatar",
+        "reqresId": "ReqRes ID",
+        "email": "Email",
+        "name": "Name",
+        "posts": "Posts",
+        "role": "Role",
+        "actions": "Actions"
+      },
+      "menu": {
+        "openMenuSr": "Open menu",
+        "actionsLabel": "Actions",
+        "viewDetails": "View Details & Posts",
+        "delete": "Delete"
+      },
+      "emptyMessage": "No users found. Import one to get started!"
+    }
+  },
+  "userDetail": {
+    "loading": {
+      "page": "Loading...",
+      "posts": "Loading posts..."
+    },
+    "errors": {
+      "userNotFound": "User not found"
+    },
+    "navigation": {
+      "backToDashboard": "Back to dashboard"
+    },
+    "header": {
+      "title": "User Detail"
+    },
+    "posts": {
+      "title": "Posts",
+      "create": "Create New Post",
+      "empty": "No posts published yet.",
+      "editProfile": "Edit Profile"
+    },
+    "toasts": {
+      "postCreated": "Post created successfully",
+      "postUpdated": "Post updated",
+      "postDeleted": "Post deleted",
+      "profileUpdated": "Profile updated",
+      "profileUpdateError": "Error updating profile"
+    },
+    "postForm": {
+      "validation": {
+        "titleMin": "Title must be at least 10 characters.",
+        "titleMax": "Title cannot exceed 30 characters.",
+        "contentMin": "Content must be at least 40 characters.",
+        "contentMax": "Content cannot exceed 500 characters."
+      }
+    }
+  },
+  "postDialog": {
+    "title": {
+      "create": "Create Post",
+      "edit": "Edit Post"
+    },
+    "description": {
+      "create": "Write a title and content for your new post.",
+      "edit": "Edit the post information."
+    },
+    "form": {
+      "titleLabel": "Title",
+      "titlePlaceholder": "Post title...",
+      "contentLabel": "Content",
+      "contentPlaceholder": "Write the content here...",
+      "counter": "{count}/500"
+    },
+    "actions": {
+      "create": "Create",
+      "creating": "Creating...",
+      "save": "Save Changes",
+      "saving": "Saving..."
+    }
+  },
+  "editProfileDialog": {
+    "title": "Edit Profile",
+    "description": "Update your personal information.",
+    "form": {
+      "firstNameLabel": "First name",
+      "firstNamePlaceholder": "Your first name...",
+      "lastNameLabel": "Last name",
+      "lastNamePlaceholder": "Your last name...",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "youremail@example.com",
+      "avatarLabel": "Avatar URL",
+      "avatarPlaceholder": "https://..."
+    },
+    "actions": {
+      "save": "Save profile",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "firstNameMin": "First name must have at least 2 characters.",
+      "lastNameMin": "Last name must have at least 2 characters.",
+      "emailInvalid": "Must be a valid email address.",
+      "urlInvalid": "Must be a valid URL."
+    }
+  },
+  "deletePost": {
+    "title": "Are you absolutely sure?",
+    "description": "This action cannot be undone. This will permanently delete the post.",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcomeTitle": "Welcome to the Dashboard",
+    "welcomeDescription": "General overview of recent activity on the platform.",
+    "manageUsers": "Manage Users",
+
+    "error": "Failed to load the dashboard",
+
+    "stats": {
+      "users": {
+        "title": "Registered Users",
+        "description": "In the local database"
+      },
+      "posts": {
+        "title": "Active Posts",
+        "description": "Posts created by users"
+      }
+    },
+
+    "latestUsers": {
+      "title": "Recent Users",
+      "description": "The latest 3 registered users.",
+      "view": "View",
+      "empty": "No users yet."
+    },
+
+    "recentPosts": {
+      "title": "Latest Posts",
+      "description": "Most recent posts.",
+      "empty": "No posts yet."
+    }
+  },
+  "header": {
+    "defaultTitle": "Fullstack Challenge",
+    "nav": {
+      "dashboard": "Dashboard",
+      "users": "Users"
+    },
+    "user": {
+      "fallback": "User",
+      "loading": "Loading...",
+      "editProfile": "Edit profile",
+      "logout": "Log out"
+    }
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "locale": {
+    "toggle": "Change language",
+    "en": "English",
+    "es": "Spanish"
+  }
+}

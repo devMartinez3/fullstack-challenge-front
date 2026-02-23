@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface UserProfileCardProps {
   user: any;
@@ -19,6 +20,8 @@ export function UserProfileCard({
   authUserId,
   openEditProfileModal,
 }: UserProfileCardProps) {
+  const t = useTranslations("userDetail");
+
   return (
     <Card className="m-0">
       <CardHeader className="flex flex-col md:flex-row items-center md:justify-between sm:items-start text-center sm:text-left gap-4">
@@ -40,7 +43,7 @@ export function UserProfileCard({
         {authUserId === user.id && (
           <Button variant="outline" size="sm" onClick={openEditProfileModal}>
             <Edit2 className="h-4 w-4 mr-2" />
-            Editar Perfil
+            {t("posts.editProfile")}
           </Button>
         )}
       </CardHeader>

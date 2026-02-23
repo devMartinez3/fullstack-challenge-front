@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useTranslations } from "next-intl";
 
 interface DeletePostAlertDialogProps {
   postToDelete: string | null;
@@ -20,6 +21,8 @@ export function DeletePostAlertDialog({
   setPostToDelete,
   onConfirm,
 }: DeletePostAlertDialogProps) {
+  const t = useTranslations("deletePost");
+
   return (
     <AlertDialog
       open={postToDelete !== null}
@@ -27,18 +30,16 @@ export function DeletePostAlertDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the post.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
+          <AlertDialogDescription>{t("description")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-600 hover:bg-red-700 text-white"
             onClick={onConfirm}
           >
-            Delete
+            {t("confirm")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

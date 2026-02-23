@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LocaleToggle } from "@/components/LocaleToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,17 +17,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User as UserIcon, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface HeaderProps {
   title?: string;
   showBack?: boolean;
 }
 
-export function Header({
-  title = "Fullstack Challenge",
-  showBack = false,
-}: HeaderProps) {
+export function Header({ title, showBack = false }: HeaderProps) {
   const router = useRouter();
+  const t = useTranslations("header");
   const { logout, user } = useAuthStore();
   const [mounted, setMounted] = useState(false);
 
@@ -39,6 +39,8 @@ export function Header({
     logout();
     router.push("/login");
   };
+
+  const displayTitle = title || t("defaultTitle");
 
   return (
     <header className="flex h-16 items-center border-b bg-white dark:bg-background px-4 md:px-6 shrink-0 gap-2">
@@ -54,7 +56,7 @@ export function Header({
         className="flex items-center gap-2 mr-6 shrink-0 transition-opacity hover:opacity-80"
       >
         <h1 className="text-lg sm:text-xl font-bold truncate max-w-[140px] sm:max-w-none">
-          {title}
+          {displayTitle}
         </h1>
       </Link>
 
@@ -64,17 +66,18 @@ export function Header({
             href="/"
             className="transition-colors hover:text-foreground/80 text-foreground/60"
           >
-            Dashboard
+            {t("nav.dashboard")}
           </Link>
           <Link
             href="/users"
             className="transition-colors hover:text-foreground/80 text-foreground/60"
           >
-            Usuarios
+            {t("nav.users")}
           </Link>
         </nav>
       )}
       <div className="ml-auto flex items-center gap-2 sm:gap-4">
+        <LocaleToggle />
         <ThemeToggle />
 
         <DropdownMenu>
@@ -86,7 +89,7 @@ export function Header({
                   alt={
                     mounted && user
                       ? `${user.first_name} ${user.last_name}`
-                      : "User"
+                      : t("user.fallback")
                   }
                 />
                 <AvatarFallback>
@@ -105,7 +108,7 @@ export function Header({
                 <p className="text-sm font-medium leading-none">
                   {mounted && user
                     ? `${user.first_name} ${user.last_name}`
-                    : "Cargando..."}
+                    : t("user.loading")}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">
                   {mounted && user ? user.email : ""}
@@ -121,7 +124,7 @@ export function Header({
                 href={`/users/${user?.id}?editProfile=true`}
                 className="cursor-pointer w-full text-foreground"
               >
-                <span>Editar perfil</span>
+                <span>{t("user.editProfile")}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -129,7 +132,7 @@ export function Header({
               className="text-red-600 cursor-pointer"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Cerrar sesión</span>
+              <span>{t("user.logout")}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

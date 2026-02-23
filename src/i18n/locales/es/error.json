@@ -1,0 +1,12 @@
+{
+    "error": {
+        "title": "¡Algo salió mal!",
+        "description": "No se pudieron cargar los ajustes. Por favor, intenta de nuevo.",
+        "backHome": "Regresar al inicio"
+    },
+    "notFound": {
+        "title": "Error 404",
+        "description": "El recurso que buscas no existe o ha sido movido.",
+        "backHome": "Regresar al inicio"
+    }
+}

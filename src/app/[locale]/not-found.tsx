@@ -5,9 +5,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export default function NotFound() {
   const router = useRouter();
+  const t = useTranslations("error");
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { contextSafe } = useGSAP({ scope: buttonRef });
 
@@ -59,10 +61,10 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50/50 dark:bg-background p-8">
       <div className="flex flex-col items-center justify-center space-y-6 text-center w-full max-w-sm">
-        <h2 className="text-3xl font-bold tracking-tight">Error 404</h2>
-        <p className="text-muted-foreground">
-          El recurso que buscas no existe o ha sido movido.
-        </p>
+        <h2 className="text-3xl font-bold tracking-tight">
+          {t("notFound.title")}
+        </h2>
+        <p className="text-muted-foreground">{t("notFound.description")}</p>
         <button
           ref={buttonRef}
           type="submit"
@@ -80,7 +82,7 @@ export default function NotFound() {
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out skew-y-12 origin-bottom" />
 
           <span className="relative flex items-center gap-2">
-            Regresar al inicio
+            {t("notFound.backHome")}
           </span>
         </button>
       </div>

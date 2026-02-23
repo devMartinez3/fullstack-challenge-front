@@ -1,0 +1,12 @@
+{
+    "error":{
+        "title": "Something went wrong!",
+        "description": "The settings could not be loaded. Please try again.",
+        "backHome": "Back to home"
+    },
+    "notFound": {
+        "title": "Error 404",
+        "description": "The resource you are looking for does not exist or has been moved.",
+        "backHome": "Back to home"
+    }
+}

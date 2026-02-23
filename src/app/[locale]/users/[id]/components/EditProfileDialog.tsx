@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import type { UseFormReturn } from "react-hook-form";
 import type { ProfileFormValues } from "@/schemas/profile.schema";
+import { useTranslations } from "next-intl";
 
 interface EditProfileDialogProps {
   isOpen: boolean;
@@ -34,14 +35,14 @@ export function EditProfileDialog({
   onSubmit,
   isPending,
 }: EditProfileDialogProps) {
+  const t = useTranslations("editProfileDialog");
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Editar Perfil</DialogTitle>
-          <DialogDescription>
-            Actualiza tu información personal.
-          </DialogDescription>
+          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -54,9 +55,12 @@ export function EditProfileDialog({
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nombre</FormLabel>
+                    <FormLabel>{t("form.firstNameLabel")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Tu nombre..." {...field} />
+                      <Input
+                        placeholder={t("form.firstNamePlaceholder")}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -67,9 +71,12 @@ export function EditProfileDialog({
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Apellido</FormLabel>
+                    <FormLabel>{t("form.lastNameLabel")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Tu apellido..." {...field} />
+                      <Input
+                        placeholder={t("form.lastNamePlaceholder")}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -81,10 +88,10 @@ export function EditProfileDialog({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Correo Electrónico</FormLabel>
+                  <FormLabel>{t("form.emailLabel")}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="tucorreo@ejemplo.com"
+                      placeholder={t("form.emailPlaceholder")}
                       type="email"
                       {...field}
                     />
@@ -98,9 +105,13 @@ export function EditProfileDialog({
               name="avatar"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>URL del Avatar</FormLabel>
+                  <FormLabel>{t("form.avatarLabel")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://..." type="url" {...field} />
+                    <Input
+                      placeholder={t("form.avatarPlaceholder")}
+                      type="url"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -108,7 +119,7 @@ export function EditProfileDialog({
             />
             <DialogFooter>
               <Button type="submit" disabled={isPending}>
-                {isPending ? "Guardando..." : "Guardar Perfil"}
+                {isPending ? t("actions.saving") : t("actions.save")}
               </Button>
             </DialogFooter>
           </form>

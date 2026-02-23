@@ -30,8 +30,10 @@ import UserTable from "./components/UserTable";
 import { useAuthStore } from "@/store/authStore";
 import { UserData } from "@/types/users";
 import { Meta } from "@/types/common";
+import { useTranslations } from "next-intl";
 
 export default function UsersPage() {
+  const t = useTranslations("user");
   const queryClient = useQueryClient();
   const { user: authUser } = useAuthStore();
   const [importId, setImportId] = useState("");
@@ -75,31 +77,31 @@ export default function UsersPage() {
   const importMutation = useMutation({
     mutationFn: usersService.importUser,
     onSuccess: () => {
-      toast.success("Usuario importado exitosamente");
+      toast.success(t("toasts.importSuccess"));
       queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsDialogOpen(false);
       setImportId("");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Error al importar usuario");
+      toast.error(error.response?.data?.message || t("toasts.importError"));
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: usersService.deleteUser,
     onSuccess: () => {
-      toast.success("Usuario descartado");
+      toast.success(t("toasts.deleteSuccess"));
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Error al eliminar usuario");
+      toast.error(error.response?.data?.message || t("toasts.deleteError"));
     },
   });
 
   const handleImport = () => {
     const id = parseInt(importId, 10);
     if (isNaN(id)) {
-      toast.error("Por favor, ingresa un ID válido");
+      toast.error(t("toasts.importError"));
       return;
     }
     importMutation.mutate(id);
@@ -108,14 +110,15 @@ export default function UsersPage() {
   return (
     <>
       <div className="flex min-h-screen flex-col bg-gray-50/50 dark:bg-background">
-        <Header title="User Dashboard" />
+        <Header title={t("dashboard.headerTitle")} />
         <main className="flex-1 p-4 md:p-6">
           <div className="mx-auto max-w-6xl space-y-4">
             <div className="flex flex-col items-start gap-1">
-              <h2 className="text-2xl font-bold tracking-tight">Users</h2>
+              <h2 className="text-2xl font-bold tracking-tight">
+                {t("dashboard.title")}
+              </h2>
               <p className="text-sm text-muted-foreground">
-                These users are saved in the local database. You can import new
-                users from ReqRes using the button below.
+                {t("dashboard.description")}
               </p>
             </div>
 
@@ -123,7 +126,7 @@ export default function UsersPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar por nombre, correo o ReqRes ID..."
+                  placeholder={t("search.placeholder")}
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value);
@@ -136,7 +139,7 @@ export default function UsersPage() {
                 onClick={() => setIsDialogOpen(true)}
                 className="w-full sm:w-auto"
               >
-                Import User from ReqRes
+                {t("actions.importFromReqRes")}
               </Button>
             </div>
 
@@ -157,10 +160,9 @@ export default function UsersPage() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Import User</DialogTitle>
+            <DialogTitle>{t("importDialog.title")}</DialogTitle>
             <DialogDescription>
-              Enter the ReqRes User ID you wish to import into the local
-              database.
+              {t("importDialog.description")}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -169,7 +171,7 @@ export default function UsersPage() {
                 htmlFor="userId"
                 className="text-right text-sm font-medium"
               >
-                User ID
+                {t("importDialog.userIdLabel")}
               </label>
               <Input
                 id="userId"
@@ -186,7 +188,9 @@ export default function UsersPage() {
               onClick={handleImport}
               disabled={importMutation.isPending || !importId}
             >
-              {importMutation.isPending ? "Importing..." : "Import"}
+              {importMutation.isPending
+                ? t("actions.importing")
+                : t("actions.import")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -199,14 +203,13 @@ export default function UsersPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>{t("deleteDialog.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              user and remove their data from our servers.
+              {t("deleteDialog.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("actions.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-600 hover:bg-red-700 text-white"
               onClick={() => {
@@ -216,12 +219,12 @@ export default function UsersPage() {
                     adminId: authUser.id,
                   });
                 } else if (!authUser?.id) {
-                  toast.error("Sesión inválida, inténtalo de nuevo.");
+                  toast.error(t("toasts.invalidSession"));
                 }
                 setUserToDelete(null);
               }}
             >
-              Delete
+              {t("actions.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

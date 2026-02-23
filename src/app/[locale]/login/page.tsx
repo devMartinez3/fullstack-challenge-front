@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useTranslations } from "next-intl";
+import { LocaleToggle } from "@/components/LocaleToggle";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("eve.holt@reqres.in");
@@ -25,24 +27,26 @@ export default function LoginPage() {
   const router = useRouter();
   const { setAuth } = useAuthStore();
 
+  const t = useTranslations("login");
+
   const mutation = useMutation({
     mutationFn: authService.login,
     onSuccess: (data: any) => {
       const { user, token } = data;
 
       setAuth(token, user);
-      toast.success("Login successful!");
+      toast.success(t("success"));
       router.push("/");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Error al iniciar sesión");
+      toast.error(error.response?.data?.message || t("errors.default"));
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.error("Please enter email and password");
+      toast.error(t("errors.missingCredentials"));
       return;
     }
     mutation.mutate({ email, password });
@@ -53,17 +57,18 @@ export default function LoginPage() {
       <Card className="md:w-full md:max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl flex items-center justify-between">
-            Login
-            <ThemeToggle />
+            {t("title")}
+            <div className="flex items-center gap-2">
+              <LocaleToggle />
+              <ThemeToggle />
+            </div>
           </CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account.
-          </CardDescription>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("emailLabel")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -74,7 +79,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("passwordLabel")}</Label>
               <PasswordInput
                 id="password"
                 value={password}
@@ -89,7 +94,7 @@ export default function LoginPage() {
               type="submit"
               disabled={mutation.isPending}
             >
-              {mutation.isPending ? "Logging in..." : "Sign in"}
+              {mutation.isPending ? t("submitting") : t("submit")}
             </Button>
           </CardFooter>
         </form>

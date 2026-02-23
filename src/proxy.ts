@@ -1,30 +1,40 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
-export function proxy(request: NextRequest) {
+const intlMiddleware = createMiddleware(routing);
+
+export default function middleware(request: NextRequest) {
+  const response = intlMiddleware(request);
+
+  if (response) {
+    return response;
+  }
+
   const token = request.cookies.get("auth_token")?.value;
-  const isAuthPage = request.nextUrl.pathname.startsWith("/login");
+  const { pathname } = request.nextUrl;
+
+  const locale = pathname.split("/")[1] as "en" | "es";
+  const isLocalePrefixed = routing.locales.includes(locale);
+
+  const basePath = isLocalePrefixed ? `/${locale}` : "";
+  const isAuthPage = pathname.startsWith(`${basePath}/login`);
 
   if (!token && !isAuthPage) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL(`${basePath}/login`, request.url));
   }
 
   if (token && isAuthPage) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL(`${basePath}/`, request.url));
   }
 
   return NextResponse.next();
 }
-
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/",
+    "/(es|en)/:path*",
+    "/((?!api|_next|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

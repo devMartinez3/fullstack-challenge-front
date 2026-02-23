@@ -1,0 +1,217 @@
+{
+  "login": {
+    "title": "Iniciar sesión",
+    "description": "Ingresa tu correo electrónico para acceder a tu cuenta.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "correo@ejemplo.com",
+    "passwordLabel": "Contraseña",
+    "submit": "Ingresar",
+    "submitting": "Iniciando sesión...",
+    "success": "¡Inicio de sesión exitoso!",
+    "errors": {
+      "missingCredentials": "Por favor ingresa el correo y la contraseña",
+      "default": "Error al iniciar sesión"
+    }
+  },
+  "user": {
+    "dashboard": {
+      "headerTitle": "Panel de Usuarios",
+      "title": "Usuarios",
+      "description": "Estos usuarios están guardados en la base de datos local. Puedes importar nuevos usuarios desde ReqRes usando el botón de abajo."
+    },
+    "search": {
+      "placeholder": "Buscar por nombre, correo o ID de ReqRes..."
+    },
+    "actions": {
+      "importFromReqRes": "Importar Usuario de ReqRes",
+      "import": "Importar",
+      "importing": "Importando...",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "edit": "Editar"
+    },
+    "importDialog": {
+      "title": "Importar Usuario",
+      "description": "Ingresa el ID de Usuario de ReqRes que deseas importar a la base de datos local.",
+      "userIdLabel": "ID de Usuario",
+      "userIdPlaceholder": "ej. 1, 2, 3..."
+    },
+    "deleteDialog": {
+      "title": "¿Estás absolutamente seguro?",
+      "description": "Esta acción no se puede deshacer. Eliminará permanentemente el usuario y eliminará sus datos de nuestros servidores."
+    },
+    "toasts": {
+      "importSuccess": "Usuario importado exitosamente",
+      "importError": "Error al importar usuario",
+      "deleteSuccess": "Usuario descartado",
+      "deleteError": "Error al eliminar usuario",
+      "invalidId": "Por favor ingresa un ID válido",
+      "invalidSession": "Sesión inválida, por favor intenta de nuevo.",
+      "roleUpdated": "Rol actualizado exitosamente",
+      "roleUpdateError": "Error al actualizar el rol"
+    },
+    "table": {
+      "columns": {
+        "avatar": "Avatar",
+        "reqresId": "ID de ReqRes",
+        "email": "Correo electrónico",
+        "name": "Nombre",
+        "posts": "Publicaciones",
+        "role": "Rol",
+        "actions": "Acciones"
+      },
+      "menu": {
+        "openMenuSr": "Abrir menú",
+        "actionsLabel": "Acciones",
+        "viewDetails": "Ver detalles y publicaciones",
+        "delete": "Eliminar"
+      },
+      "emptyMessage": "No se encontraron usuarios. ¡Importa uno para comenzar!"
+    }
+  },
+  "userDetail": {
+    "loading": {
+      "page": "Cargando...",
+      "posts": "Cargando posts..."
+    },
+    "errors": {
+      "userNotFound": "Usuario no encontrado"
+    },
+    "navigation": {
+      "backToDashboard": "Volver al dashboard"
+    },
+    "header": {
+      "title": "Detalle del Usuario"
+    },
+    "posts": {
+      "title": "Posts",
+      "create": "Crear nuevo post",
+      "empty": "No hay posts publicados.",
+      "editProfile": "Editar perfil"
+    },
+    "toasts": {
+      "postCreated": "Post creado exitosamente",
+      "postUpdated": "Post actualizado",
+      "postDeleted": "Post eliminado",
+      "profileUpdated": "Perfil actualizado",
+      "profileUpdateError": "Error al actualizar perfil"
+    },
+    "postForm": {
+      "validation": {
+        "titleMin": "El título debe tener al menos 10 caracteres.",
+        "titleMax": "El título no puede superar los 30 caracteres.",
+        "contentMin": "El contenido debe tener al menos 40 caracteres.",
+        "contentMax": "El contenido no puede superar los 500 caracteres."
+      }
+    }
+  },
+  "postDialog": {
+    "title": {
+      "create": "Crear Post",
+      "edit": "Editar Post"
+    },
+    "description": {
+      "create": "Escribe un título y contenido para tu nuevo post.",
+      "edit": "Modifica la información del post."
+    },
+    "form": {
+      "titleLabel": "Título",
+      "titlePlaceholder": "Título del post...",
+      "contentLabel": "Contenido",
+      "contentPlaceholder": "Escribe el contenido aquí...",
+      "counter": "{count}/500"
+    },
+    "actions": {
+      "create": "Crear",
+      "creating": "Creando...",
+      "save": "Guardar cambios",
+      "saving": "Guardando..."
+    }
+  },
+  "editProfileDialog": {
+    "title": "Editar perfil",
+    "description": "Actualiza tu información personal.",
+    "form": {
+      "firstNameLabel": "Nombre",
+      "firstNamePlaceholder": "Tu nombre...",
+      "lastNameLabel": "Apellido",
+      "lastNamePlaceholder": "Tu apellido...",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "tucorreo@ejemplo.com",
+      "avatarLabel": "URL del avatar",
+      "avatarPlaceholder": "https://..."
+    },
+    "actions": {
+      "save": "Guardar perfil",
+      "saving": "Guardando..."
+    },
+    "validation": {
+      "firstNameMin": "El nombre debe tener al menos 2 caracteres.",
+      "lastNameMin": "El apellido debe tener al menos 2 caracteres.",
+      "emailInvalid": "Debe ser un correo electrónico válido.",
+      "urlInvalid": "Debe ser una URL válida."
+    }
+  },
+  "deletePosts": {
+    "title": "¿Estás completamente seguro?",
+    "description": "Esta acción no se puede deshacer. El post será eliminado permanentemente.",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcomeTitle": "Bienvenido al Dashboard",
+    "welcomeDescription": "Resumen general de la actividad reciente en la plataforma.",
+    "manageUsers": "Gestionar Usuarios",
+
+    "error": "Error al cargar el dashboard",
+
+    "stats": {
+      "users": {
+        "title": "Usuarios Registrados",
+        "description": "En la base de datos local"
+      },
+      "posts": {
+        "title": "Publicaciones Activas",
+        "description": "Posts creados por usuarios"
+      }
+    },
+
+    "latestUsers": {
+      "title": "Usuarios Recientes",
+      "description": "Los últimos 3 usuarios registrados.",
+      "view": "Ver",
+      "empty": "No hay usuarios aún."
+    },
+
+    "recentPosts": {
+      "title": "Últimos Posts",
+      "description": "Las publicaciones más recientes.",
+      "empty": "No hay publicaciones aún."
+    }
+  },
+  "header": {
+    "defaultTitle": "Fullstack Challenge",
+    "nav": {
+      "dashboard": "Dashboard",
+      "users": "Usuarios"
+    },
+    "user": {
+      "fallback": "User",
+      "loading": "Cargando...",
+      "editProfile": "Editar perfil",
+      "logout": "Cerrar sesión"
+    }
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "locale": {
+    "toggle": "Cambiar idioma",
+    "en": "Inglés",
+    "es": "Español"
+  }
+}

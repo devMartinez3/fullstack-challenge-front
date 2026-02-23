@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useAuthStore } from "@/store/authStore";
+import { useTranslations } from "next-intl";
 
 interface UserPostsGridProps {
   posts?: any[];
@@ -30,12 +31,13 @@ export function UserPostsGrid({
   isDeletePending,
 }: UserPostsGridProps) {
   const { user } = useAuthStore();
+  const t = useTranslations();
 
   if (!posts || posts.length === 0) {
     return (
       <div className="grid gap-4 overflow-y-auto max-h-[calc(100vh-27.5rem)] md:max-h-[calc(100vh-23.5rem)] z-10">
         <p className="text-muted-foreground col-span-full">
-          No hay posts todavía.
+          {t("userDetail.posts.empty")}
         </p>
       </div>
     );
@@ -76,7 +78,7 @@ export function UserPostsGrid({
               onClick={() => openEditModal(post)}
             >
               <Edit2 className="mr-2 h-4 w-4" />
-              Editar
+              {t("user.actions.edit")}
             </Button>
             {user && user.role === "ADMIN" && (
               <Button

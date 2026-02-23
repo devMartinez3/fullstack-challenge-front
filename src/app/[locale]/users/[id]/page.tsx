@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import {
-  profileSchema,
+  getProfileSchema,
   type ProfileFormValues,
 } from "@/schemas/profile.schema";
 import { useAuthStore } from "@/store/authStore";
@@ -22,19 +22,7 @@ import { PostDialog } from "./components/PostDialog";
 import { DeletePostAlertDialog } from "./components/DeletePostAlertDialog";
 import { EditProfileDialog } from "./components/EditProfileDialog";
 import { Paginator } from "@/components/Paginator";
-
-const postSchema = z.object({
-  title: z
-    .string()
-    .min(10, { message: "El título debe tener al menos 10 caracteres." })
-    .max(30, { message: "El título no puede superar los 30 caracteres." }),
-  content: z
-    .string()
-    .min(40, { message: "El contenido debe tener al menos 40 caracteres." })
-    .max(500, { message: "El contenido no puede superar los 500 caracteres." }),
-});
-
-type PostFormValues = z.infer<typeof postSchema>;
+import { useTranslations } from "next-intl";
 
 export default function UserDetailPage({
   params,
@@ -45,6 +33,20 @@ export default function UserDetailPage({
   const userId = parseInt(resolvedParams.id, 10);
   const queryClient = useQueryClient();
   const { user: authUser } = useAuthStore();
+  const t = useTranslations("userDetail");
+
+  const postSchema = z.object({
+    title: z
+      .string()
+      .min(10, { message: t("postForm.validation.titleMin") })
+      .max(30, { message: t("postForm.validation.titleMax") }),
+    content: z
+      .string()
+      .min(40, { message: t("postForm.validation.contentMin") })
+      .max(500, { message: t("postForm.validation.contentMax") }),
+  });
+
+  type PostFormValues = z.infer<typeof postSchema>;
 
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -64,7 +66,7 @@ export default function UserDetailPage({
   });
 
   const profileForm = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileSchema),
+    resolver: zodResolver(getProfileSchema(t)),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -86,7 +88,7 @@ export default function UserDetailPage({
   const createPostMutation = useMutation({
     mutationFn: postsService.createPost,
     onSuccess: () => {
-      toast.success("Post creado exitosamente");
+      toast.success(t("toasts.postCreated"));
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
       queryClient.invalidateQueries({ queryKey: ["posts", userId] });
       queryClient.invalidateQueries({ queryKey: ["users"] });
@@ -98,7 +100,7 @@ export default function UserDetailPage({
   const updatePostMutation = useMutation({
     mutationFn: postsService.updatePost,
     onSuccess: () => {
-      toast.success("Post actualizado");
+      toast.success(t("toasts.postUpdated"));
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
       queryClient.invalidateQueries({ queryKey: ["posts", userId] });
       queryClient.invalidateQueries({ queryKey: ["users"] });
@@ -111,7 +113,7 @@ export default function UserDetailPage({
   const deletePostMutation = useMutation({
     mutationFn: postsService.deletePost,
     onSuccess: () => {
-      toast.success("Post eliminado");
+      toast.success(t("toasts.postDeleted"));
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
       queryClient.invalidateQueries({ queryKey: ["posts", userId] });
       queryClient.invalidateQueries({ queryKey: ["users"] });
@@ -122,7 +124,7 @@ export default function UserDetailPage({
     mutationFn: (data: ProfileFormValues) =>
       usersService.updateProfile(userId, data),
     onSuccess: () => {
-      toast.success("Perfil actualizado");
+      toast.success(t("toasts.profileUpdated"));
       queryClient.invalidateQueries({ queryKey: ["user", userId] });
       queryClient.invalidateQueries({ queryKey: ["users"] });
       // We don't update the auth store here immediately, but in a real app you might want to sync it.
@@ -130,7 +132,7 @@ export default function UserDetailPage({
     },
     onError: (error: any) => {
       toast.error(
-        error?.response?.data?.message || "Error al actualizar perfil",
+        error?.response?.data?.message || t("toasts.profileUpdateError"),
       );
     },
   });
@@ -196,7 +198,7 @@ export default function UserDetailPage({
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Cargando...</p>
+        <p className="text-muted-foreground">{t("loading.page")}</p>
       </div>
     );
   }
@@ -204,9 +206,9 @@ export default function UserDetailPage({
   if (!user) {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center space-y-4">
-        <p className="text-xl">Usuario no encontrado</p>
+        <p className="text-xl">{t("errors.userNotFound")}</p>
         <Button asChild>
-          <Link href="/">Volver al dashboard</Link>
+          <Link href="/">{t("navigation.backToDashboard")}</Link>
         </Button>
       </div>
     );
@@ -214,7 +216,7 @@ export default function UserDetailPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50/50 dark:bg-background">
-      <Header title="Detalle del Usuario" showBack />
+      <Header title={t("header.title")} showBack />
       <main className="flex-1 p-4 md:p-6">
         <div className="mx-auto max-w-6xl space-y-6">
           <UserProfileCard
@@ -225,7 +227,7 @@ export default function UserDetailPage({
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between my-4 gap-4 z-0">
             <h2 className="text-xl font-semibold w-full text-center sm:text-left sm:w-auto">
-              Posts
+              {t("posts.title")}
             </h2>
             <Button
               className="w-full sm:w-auto"
@@ -234,12 +236,12 @@ export default function UserDetailPage({
                 setIsCreateOpen(true);
               }}
             >
-              Crear Nuevo Post
+              {t("posts.create")}
             </Button>
           </div>
 
           {isLoadingPosts ? (
-            <div className="flex justify-center p-8">Cargando posts...</div>
+            <div className="flex justify-center p-8">{t("loading.posts")}</div>
           ) : (
             <>
               <UserPostsGrid

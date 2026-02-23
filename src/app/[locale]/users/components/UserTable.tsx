@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { DataTable } from "@/components/DataTable";
 import { Paginator } from "@/components/Paginator";
@@ -23,6 +23,8 @@ import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserData } from "@/types/users";
 import { Meta } from "@/types/common";
+
+import { useTranslations } from "next-intl";
 
 interface UserTableProps {
   isLoading: boolean;
@@ -48,6 +50,7 @@ export default function UserTable({
   usersResponse,
   metaResp,
 }: UserTableProps) {
+  const t = useTranslations("user");
   const { user: authUser } = useAuthStore();
   const queryClient = useQueryClient();
 
@@ -62,15 +65,13 @@ export default function UserTable({
       adminId: number;
     }) => usersService.updateUserRole(id, role, adminId),
     onSuccess: () => {
-      toast.success("Rol actualizado correctamente");
+      toast.success(t("toasts.roleUpdated"));
       queryClient.invalidateQueries({ queryKey: ["users"] });
       // If the admin is on a detail page, invalidate that too just in case
       // queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Error al actualizar el rol",
-      );
+      toast.error(error.response?.data?.message || t("toasts.roleUpdateError"));
     },
   });
 
@@ -80,7 +81,7 @@ export default function UserTable({
         data={usersResponse || []}
         columns={[
           {
-            header: "Avatar",
+            header: t("table.columns.avatar"),
             className: "w-[80px]",
             cell: (user: UserData) => (
               <Avatar>
@@ -93,25 +94,25 @@ export default function UserTable({
             ),
           },
           {
-            header: "ReqRes ID",
+            header: t("table.columns.reqresId"),
             accessorKey: "id",
             className: "font-medium",
           },
           {
-            header: "Email",
+            header: t("table.columns.email"),
             accessorKey: "email",
           },
           {
-            header: "Name",
+            header: t("table.columns.name"),
             cell: (user: UserData) => `${user.firstName} ${user.lastName}`,
           },
           {
-            header: "Posts",
+            header: t("table.columns.posts"),
             className: "text-end",
             cell: (user: UserData) => user._count?.posts || 0,
           },
           {
-            header: "Role",
+            header: t("table.columns.role"),
             className: "text-end",
             cell: (user: UserData) => {
               const isAdmin = authUser?.role === "ADMIN";
@@ -177,7 +178,7 @@ export default function UserTable({
             },
           },
           {
-            header: "Actions",
+            header: t("table.columns.actions"),
             className: "text-right",
             cell: (user: UserData) => {
               const isAdmin = authUser?.role === "ADMIN";
@@ -186,15 +187,19 @@ export default function UserTable({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-8 w-8 p-0">
-                      <span className="sr-only">Open menu</span>
+                      <span className="sr-only">
+                        {t("table.menu.openMenuSr")}
+                      </span>
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuLabel>
+                      {t("table.menu.actionsLabel")}
+                    </DropdownMenuLabel>
                     <DropdownMenuItem asChild>
                       <Link href={`/users/${user.id}`}>
-                        View Details & Posts
+                        {t("table.menu.viewDetails")}
                       </Link>
                     </DropdownMenuItem>
                     {isAdmin && (
@@ -205,7 +210,7 @@ export default function UserTable({
                           onClick={() => setUserToDelete(user.id)}
                           disabled={deleteMutation.isPending}
                         >
-                          Delete
+                          {t("table.menu.delete")}
                         </DropdownMenuItem>
                       </>
                     )}
@@ -216,7 +221,7 @@ export default function UserTable({
           },
         ]}
         isLoading={isLoading}
-        emptyMessage="No users found. Import one to get started!"
+        emptyMessage={t("table.emptyMessage")}
         keyExtractor={(item: UserData) => item.id.toString()}
       />
 
